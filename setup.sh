@@ -1,10 +1,17 @@
 #!/bin/bash
 
 ln_opts=
+INSERT_STR="source .my_env"
 
 function die {
     echo >&2 "$@"
     exit 1
+}
+
+#for debugging#
+docmd(){
+    echo "Command: $*"
+    $*
 }
 
 
@@ -13,7 +20,6 @@ if [ -z $HOME ]; then
     die
 fi
 
-
 while getopts f opt
 do
     case $opt in
@@ -21,27 +27,25 @@ do
     esac
 done
 
-echo ln_opts=$ln_opts
-
 sudo apt install -y vim emacs gcc make screen gdb
-
 
 for file in `ls ./dotfiles`; do
 
-    if [ -f $HOME/.$file ]; then
-        echo .$file already exists in $HOME, run with -f to overwrite
+    if [ -L $HOME/.$file ]; then
+        continue
     fi
+
+    if [ -e $HOME/.$file ]; then
+        echo .$file already exists in $HOME, run with -f to overwrite
+        continue
+    fi
+
     ln -s $ln_opts $PWD/dotfiles/$file $HOME/.$file 
 done
 
-INSERT_STR='source .my_env'
 
-docmd(){
-    echo "Command: $*"
-    $*
-}
-
-grep "source .my_env" $HOME/.bashrc
+grep -q -F "$INSERT_STR" $HOME/.bashrc
 if [ $? -eq 1 ]; then
+    echo adding $INSERT_STR to end of .bashrc
     echo $INSERT_STR >> $HOME/.bashrc
 fi
