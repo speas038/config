@@ -1,0 +1,2 @@
+Defaults	!tty_tickets
+Defaults	timestamp_timeout=120

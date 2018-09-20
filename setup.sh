@@ -27,7 +27,12 @@ do
     esac
 done
 
+
+#install dev programs
 sudo apt install -y vim emacs gcc make screen gdb
+
+git config --global user.email "alex.speasmaker@gmail.com"
+git config --global user.name  "Alex Speasmaker"
 
 for file in `ls ./dotfiles`; do
 
@@ -49,3 +54,5 @@ if [ $? -eq 1 ]; then
     echo adding $INSERT_STR to end of .bashrc
     echo $INSERT_STR >> $HOME/.bashrc
 fi
+
+sudo cp ./sudo/alex /etc/sudoers.d
