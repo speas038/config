@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ln_opts=
-INSERT_STR="source .my_env"
+INSERT_STR="source ~/.my_env"
 
 function die {
     echo >&2 "$@"
