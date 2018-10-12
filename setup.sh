@@ -29,7 +29,7 @@ done
 
 
 #install dev programs
-sudo apt install -y vim emacs gcc make screen gdb
+sudo apt install -y vim emacs gcc make screen gdb cscope
 
 git config --global user.email "alex.speasmaker@gmail.com"
 git config --global user.name  "Alex Speasmaker"
