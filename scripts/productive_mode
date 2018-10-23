@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#This script is a helpful tool for someone who finds themselves going to social
+#media without even thinking when code is building, or some other non instantaneous
+#operation has to be performed while coding.  
+
+#Overcoming our weakness is how we become strong
+
+HOSTS=./test
+
+STARTSTR_MARK="
+###Start Productivity Redirects#####"
+ENDSTR_MARK="###Stop Productivity Redirects#####
+"
+
+ENABLE_REDIRECTS="127.0.0.1 www.facebook.com
+127.0.0.1 www.reddit.com
+127.0.0.1 www.youtube.com
+127.0.0.1 www.instagram.com"
+
+#while read -r line; do
+#    echo $line
+#    grep -q -F "$line" $HOSTS || echo "$line" >> $HOSTS
+#done <<< "$ENABLE_REDIRECTS"
+
+##Find string in file, if it doesn't exist, add it
+
+sed '/^$STARTSTR_MARK {$/,/^$ENDSTR_MARK/d' $HOSTS
+
+#grep -oz "$ENABLE_REDIRECTS" $HOSTS || echo "$ENABLE_REDIRECTS" >> $HOSTS
+
+#echo -e "$REDIRECTS"
