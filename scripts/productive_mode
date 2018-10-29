@@ -8,10 +8,8 @@
 
 HOSTS=./test
 
-STARTSTR_MARK="
-###Start Productivity Redirects#####"
-ENDSTR_MARK="###Stop Productivity Redirects#####
-"
+START_MARK="###Start Productivity Redirects###"
+END_MARK="###Stop Productivity Redirects###"
 
 ENABLE_REDIRECTS="127.0.0.1 www.facebook.com
 127.0.0.1 www.reddit.com
@@ -24,8 +22,10 @@ ENABLE_REDIRECTS="127.0.0.1 www.facebook.com
 #done <<< "$ENABLE_REDIRECTS"
 
 ##Find string in file, if it doesn't exist, add it
+sed "/^${START_MARK}/,/^${END_MARK}/!d" ./test
 
-sed '/^$STARTSTR_MARK {$/,/^$ENDSTR_MARK/d' $HOSTS
+##Could also work
+#awk '/^START=A$/,/^END$/ { print }' ./test2
 
 #grep -oz "$ENABLE_REDIRECTS" $HOSTS || echo "$ENABLE_REDIRECTS" >> $HOSTS
 

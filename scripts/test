@@ -33,3 +33,11 @@ fe00::0 ip6-localnet
 ff00::0 ip6-mcastprefix
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
+
+
+###Start Productivity Redirects###
+127.0.0.1 www.facebook.com
+127.0.0.1 www.reddit.com
+127.0.0.1 www.youtube.com
+127.0.0.1 www.instagram.com
+###Stop Productivity Redirects###
