@@ -8,25 +8,23 @@
 
 HOSTS=./test
 
-START_MARK="###Start Productivity Redirects###"
-END_MARK="###Stop Productivity Redirects###"
+ENABLE_REDIRECTS=\
+"www.facebook.com
+www.reddit.com
+www.youtube.com
+www.instagram.com"
 
-ENABLE_REDIRECTS="127.0.0.1 www.facebook.com
-127.0.0.1 www.reddit.com
-127.0.0.1 www.youtube.com
-127.0.0.1 www.instagram.com"
+##Changes - I would like to read the blocked sites from a config file
+#   Add -e flag to enable individual websites
+#   Add check for existing entry to not interfere with entries in
+#     /etc/hosts that may already exist
 
-#while read -r line; do
-#    echo $line
-#    grep -q -F "$line" $HOSTS || echo "$line" >> $HOSTS
-#done <<< "$ENABLE_REDIRECTS"
+for i in $ENABLE_REDIRECTS;
+do
+    echo "127.0.0.1 $i #productive_mode" > HOSTS
+done
 
-##Find string in file, if it doesn't exist, add it
-sed "/^${START_MARK}/,/^${END_MARK}/!d" ./test
-
-##Could also work
-#awk '/^START=A$/,/^END$/ { print }' ./test2
-
-#grep -oz "$ENABLE_REDIRECTS" $HOSTS || echo "$ENABLE_REDIRECTS" >> $HOSTS
-
-#echo -e "$REDIRECTS"
+if [ $1 == "--disable" ]
+then
+    sed -n '/#productive_mode_redirect/!p' file
+fi

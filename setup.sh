@@ -56,3 +56,6 @@ if [ $? -eq 1 ]; then
 fi
 
 sudo cp ./sudo/alex /etc/sudoers.d
+
+mkdir ~/bin
+cp ./scripts/* ~/bin
