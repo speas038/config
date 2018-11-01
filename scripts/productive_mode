@@ -6,7 +6,8 @@
 
 #Overcoming our weakness is how we become strong
 
-HOSTS=./test
+HOSTS="/etc/hosts"
+HOSTS_BACKUP="/etc/hosts.productive_mode.bak"
 
 ENABLE_REDIRECTS=\
 "www.facebook.com
@@ -14,17 +15,24 @@ www.reddit.com
 www.youtube.com
 www.instagram.com"
 
-##Changes - I would like to read the blocked sites from a config file
+MARKER="#productive_mode"
+
+##Changes -nice to haves
+#   I would like to read the blocked sites from a config file
 #   Add -e flag to enable individual websites
-#   Add check for existing entry to not interfere with entries in
-#     /etc/hosts that may already exist
 
-for i in $ENABLE_REDIRECTS;
-do
-    echo "127.0.0.1 $i #productive_mode" > HOSTS
-done
+if [ ! -e $HOSTS_BACKUP ]; then
+    echo "creating hosts backup"
+    sudo cp $HOSTS $HOSTS_BACKUP
+fi
 
-if [ $1 == "--disable" ]
-then
-    sed -n '/#productive_mode_redirect/!p' file
+if [ "$1" = "-d" ]; then
+    echo "Removing redirects"
+    sudo sed -iq "/${MARKER}/d" $HOSTS
+else
+    for i in $ENABLE_REDIRECTS;
+    do
+        echo "Adding line"
+        echo "127.0.0.1 $i ${MARKER}" | sudo tee -a $HOSTS
+    done
 fi
