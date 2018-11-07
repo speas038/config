@@ -1,0 +1,3 @@
+57,58d56
+< 
+<     modifier_map Mod3   { Scroll_Lock };

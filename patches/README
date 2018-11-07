@@ -1,0 +1,7 @@
+scroll_lock_light.txt
+
+is applied to /usr/share/X11/xkb/symbols/us
+
+clear cache: rm -f /var/lib/xkb/*
+
+reboot
