@@ -2,6 +2,8 @@ scroll_lock_light.txt
 
 is applied to /usr/share/X11/xkb/symbols/us
 
+sudo patch -b /usr/share/X11/xkb/symbols/us ./scroll_lock_light.txt
+
 clear cache: rm -f /var/lib/xkb/*
 
 reboot
