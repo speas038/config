@@ -14,7 +14,8 @@ ENABLE_REDIRECTS=\
 www.reddit.com
 www.youtube.com
 www.instagram.com
-www.messenger.com"
+www.messenger.com
+www.twitter.com"
 
 MARKER="#productive_mode"
 
