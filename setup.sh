@@ -58,4 +58,4 @@ fi
 sudo cp ./sudo/alex /etc/sudoers.d
 
 mkdir ~/bin
-cp ./scripts/* ~/bin
+ln -s $PWD/scripts/productive_mode $HOME/bin/productive_mode
