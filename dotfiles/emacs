@@ -3,6 +3,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(auto-save-file-name-transforms (quote ((".*" "~/.emacs.d/autosaves/\\1" t))))
+ '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
  '(c-basic-offset 4)
  '(c-comment-only-line-offset (quote set-from-style))
  '(c-default-style
@@ -15,6 +17,7 @@
  '(custom-enabled-themes (quote (tango-dark)))
  '(fortran-minimum-statement-indent-tab 8)
  '(global-ede-mode t)
+ '(global-mark-ring-max 5000)
  '(indent-tabs-mode nil)
  '(show-paren-mode t)
  '(tab-width 4))
@@ -25,6 +28,87 @@
  ;; If there is more than one, they won't work right.
  )
 
+;;FROM EMACS TUTORIAL http://tuhdo.github.io/emacs-tutor3.html
+(require 'package)
+(add-to-list 'package-archives
+  '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(package-initialize)
+
+(electric-pair-mode 1)
+
+
+;;Company mode
+(global-company-mode 1)
+(add-to-list 'company-backends 'company-c-headers)
+
+;;(defun ede-object-system-include-path ()
+;;  "Return the system include path for the current buffer."
+;;  (when ede-object
+;;    (ede-system-include-path ede-object)))
+;;
+;;(setq company-c-headers-path-system 'ede-object-system-include-path)
+;;;;end company
+
+
+
+;;ggtags
+(require 'ggtags)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+              (ggtags-mode 1))))
+
+(define-key ggtags-mode-map (kbd "C-c g s") 'ggtags-find-other-symbol)
+(define-key ggtags-mode-map (kbd "C-c g h") 'ggtags-view-tag-history)
+(define-key ggtags-mode-map (kbd "C-c g r") 'ggtags-find-reference)
+(define-key ggtags-mode-map (kbd "C-c g f") 'ggtags-find-file)
+(define-key ggtags-mode-map (kbd "C-c g c") 'ggtags-create-tags)
+(define-key ggtags-mode-map (kbd "C-c g u") 'ggtags-update-tags)
+
+(define-key ggtags-mode-map (kbd "M-,") 'pop-tag-mark)
+;;end-gg-tags
+
+;;helm
+(setq
+ helm-gtags-ignore-case t
+ helm-gtags-auto-update t
+ helm-gtags-use-input-at-cursor t
+ helm-gtags-pulse-at-cursor t
+ helm-gtags-prefix-key "\C-cg"
+ helm-gtags-suggested-key-mapping t
+ )
+
+(require 'helm-gtags)
+;; Enable helm-gtags-mode
+(add-hook 'dired-mode-hook 'helm-gtags-mode)
+(add-hook 'eshell-mode-hook 'helm-gtags-mode)
+(add-hook 'c-mode-hook 'helm-gtags-mode)
+(add-hook 'c++-mode-hook 'helm-gtags-mode)
+(add-hook 'asm-mode-hook 'helm-gtags-mode)
+
+(define-key helm-gtags-mode-map (kbd "C-c g a") 'helm-gtags-tags-in-this-function)
+(define-key helm-gtags-mode-map (kbd "C-j") 'helm-gtags-select)
+(define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
+(define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
+(define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+(define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
+;;end-helm
+
+(require 'highlight-symbol)
+(global-set-key [(control f3)] 'highlight-symbol)
+(global-set-key [f3] 'highlight-symbol-next)
+(global-set-key [(shift f3)] 'highlight-symbol-prev)
+(global-set-key [(meta f3)] 'highlight-symbol-query-replace)
+
+(global-set-key (kbd "C-x C-b") 'ibuffer) ;; bind "C-x C-b" to ibuffer command
+
+;; A quick major mode help with discover-my-major
+(global-unset-key (kbd "C-h h"))        ; original "C-h h" displays "hello world" in different languages
+(define-key 'help-command (kbd "h m") 'discover-my-major)
+
+
+;;END EMACS TUTORIAL
+
 (setq-default indent-tabs-mode nil)
 (setq tab-width 4) ; or any other preferred value
 (defvaralias 'c-basic-offset 'tab-width)
@@ -32,7 +116,7 @@
 
 
 (setq tags-table-list
-      '("/home/alex/magicwand-commsbackbone/TAGS" "/usr/src/linux-headers-4.4.0-81-generic/TAGS"))
+      '("/home/alex/ins-production/magicwand-commsbackbone/TAGS"))
 
 ;;Prevents large file warning every time I try to
 ;;Open TAGS file
@@ -80,12 +164,10 @@
 
 (setq scroll-conservatively 101)
 
-(desktop-save-mode 1)
+;(desktop-save-mode 1)
 
 ;; Put autosave files (ie #foo#) and backup files (ie foo~) in ~/.emacs.d/.
-(custom-set-variables
-   '(auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
-     '(backup-directory-alist '((".*" . "~/.emacs.d/backups/"))))
+
 
 ;; create the autosave dir if necessary, since emacs won't.
 (make-directory "~/.emacs.d/autosaves/" t)
