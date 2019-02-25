@@ -19,6 +19,9 @@
  '(global-ede-mode t)
  '(global-mark-ring-max 5000)
  '(indent-tabs-mode nil)
+ '(package-selected-packages
+   (quote
+    (magit highlight-symbol helm-gtags ggtags discover-my-major company-c-headers)))
  '(show-paren-mode t)
  '(tab-width 4))
 (custom-set-faces
@@ -48,8 +51,6 @@
 ;;
 ;;(setq company-c-headers-path-system 'ede-object-system-include-path)
 ;;;;end company
-
-
 
 ;;ggtags
 (require 'ggtags)
@@ -107,7 +108,15 @@
 (define-key 'help-command (kbd "h m") 'discover-my-major)
 
 
+(semantic-mode 1)
+(global-semantic-idle-summary-mode 1)
+
 ;;END EMACS TUTORIAL
+
+(require 'magit)
+(global-set-key (kbd "C-x g") 'magit-status)
+
+
 
 (setq-default indent-tabs-mode nil)
 (setq tab-width 4) ; or any other preferred value
