@@ -16,8 +16,7 @@
  '(column-number-mode t)
  '(company-clang-arguments
    (quote
-    ("-I/home/alex/ins-production/magicwand-commsbackbone/ins/ins-rump/src-netbsd/include/"
-     "-I/home/alex/ins-production/magicwand-commsbackbone/ins/ins-rump/src-netbsd/lib/libutil/")))
+    ("-I/home/alex/ins-production/magicwand-commsbackbone/ins/ins-rump/src-netbsd/include/" "-I/home/alex/ins-production/magicwand-commsbackbone/ins/ins-rump/src-netbsd/lib/libutil/")))
  '(custom-enabled-themes (quote (tango-dark)))
  '(fortran-minimum-statement-indent-tab 8)
  '(global-ede-mode t)
@@ -25,7 +24,7 @@
  '(indent-tabs-mode nil)
  '(package-selected-packages
    (quote
-    (markdown-mode magit highlight-symbol helm-gtags ggtags discover-my-major company-c-headers)))
+    (move-text which-key use-package markdown-mode magit highlight-symbol helm-gtags ggtags discover-my-major company-c-headers)))
  '(show-paren-mode t)
  '(tab-width 4))
 (custom-set-faces
@@ -35,11 +34,23 @@
  ;; If there is more than one, they won't work right.
  )
 
+
 ;;FROM EMACS TUTORIAL http://tuhdo.github.io/emacs-tutor3.html
 (require 'package)
 (add-to-list 'package-archives
   '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
+
+;;from https://github.com/freetonik/emacs-dotfiles
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile (require 'use-package))
+
+(setq use-package-always-ensure t)
+;;
+
 
 (electric-pair-mode 1)
 
@@ -119,7 +130,6 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 
 
-
 (setq-default indent-tabs-mode nil)
 (setq tab-width 4) ; or any other preferred value
 (defvaralias 'c-basic-offset 'tab-width)
@@ -145,26 +155,16 @@
 ;;startup screen every time
 (setq inhibit-startup-screen t)
 
-;; start speedbar if we're using a window system
-;;(require 'speedbar)
-;;(when window-system (speedbar 1))
-;;(speedbar 1)
-;;(speedbar)
+(use-package which-key
+  :config
+  (which-key-mode)
+  (setq which-key-idle-delay 0.5))
 
-;; (defun sb-expand-curren-file ()
-;;"Expand current file in speedbar buffer"  
-;; (interactive) 
-;;  (setq current-file (buffer-file-name))
-;;  (speedbar-refresh)
-;;  (speedbar-find-selected-file current-file)
-;;  (speedbar-expand-line))
+(use-package move-text
+  :config
+  (move-text-default-bindings))
 
-;;(add-hook 'focus-in-hook 'sb-expand-curren-file)
-
-;;TODO worth messing with, just not now
-;(add-to-list 'load-path "~/.emacs.d/lisp/")
-;(require 'sr-speedbar)
-;(sr-speedbar-open)
+(blink-cursor-mode 0)
 
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
@@ -172,13 +172,12 @@
 
 (setq scroll-conservatively 101)
 
-;(desktop-save-mode 1)
 
 ;; Put autosave files (ie #foo#) and backup files (ie foo~) in ~/.emacs.d/.
-
-
 ;; create the autosave dir if necessary, since emacs won't.
 (make-directory "~/.emacs.d/autosaves/" t)
 
+;;automatically relaod files when they change on the filesystem
+(global-auto-revert-mode t)
 
 (setq tramp-default-method "ssh")
