@@ -14,6 +14,10 @@
      (awk-mode . "awk")
      (other . "gnu"))))
  '(column-number-mode t)
+ '(company-clang-arguments
+   (quote
+    ("-I/home/alex/ins-production/magicwand-commsbackbone/ins/ins-rump/src-netbsd/include/"
+     "-I/home/alex/ins-production/magicwand-commsbackbone/ins/ins-rump/src-netbsd/lib/libutil/")))
  '(custom-enabled-themes (quote (tango-dark)))
  '(fortran-minimum-statement-indent-tab 8)
  '(global-ede-mode t)
@@ -21,7 +25,7 @@
  '(indent-tabs-mode nil)
  '(package-selected-packages
    (quote
-    (magit highlight-symbol helm-gtags ggtags discover-my-major company-c-headers)))
+    (markdown-mode magit highlight-symbol helm-gtags ggtags discover-my-major company-c-headers)))
  '(show-paren-mode t)
  '(tab-width 4))
 (custom-set-faces
@@ -39,18 +43,6 @@
 
 (electric-pair-mode 1)
 
-
-;;Company mode
-(global-company-mode 1)
-(add-to-list 'company-backends 'company-c-headers)
-
-;;(defun ede-object-system-include-path ()
-;;  "Return the system include path for the current buffer."
-;;  (when ede-object
-;;    (ede-system-include-path ede-object)))
-;;
-;;(setq company-c-headers-path-system 'ede-object-system-include-path)
-;;;;end company
 
 ;;ggtags
 (require 'ggtags)
@@ -108,8 +100,18 @@
 (define-key 'help-command (kbd "h m") 'discover-my-major)
 
 
+;;Company mode
+(global-company-mode 1)
+(add-to-list 'company-backends 'company-c-headers)
+
+(require 'cc-mode)
+(setq company-backends (delete 'company-semantic company-backends))
+(define-key c-mode-map  [(tab)] 'company-complete)
+(define-key c++-mode-map  [(tab)] 'company-complete)
+
+
 (semantic-mode 1)
-(global-semantic-idle-summary-mode 1)
+;;(global-semantic-idle-summary-mode 1)
 
 ;;END EMACS TUTORIAL
 
@@ -123,9 +125,6 @@
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
 
-
-(setq tags-table-list
-      '("/home/alex/ins-production/magicwand-commsbackbone/TAGS"))
 
 ;;Prevents large file warning every time I try to
 ;;Open TAGS file
@@ -150,7 +149,7 @@
 ;;(require 'speedbar)
 ;;(when window-system (speedbar 1))
 ;;(speedbar 1)
-(speedbar)
+;;(speedbar)
 
 ;; (defun sb-expand-curren-file ()
 ;;"Expand current file in speedbar buffer"  
@@ -181,6 +180,5 @@
 ;; create the autosave dir if necessary, since emacs won't.
 (make-directory "~/.emacs.d/autosaves/" t)
 
-(which-function-mode 1)
 
 (setq tramp-default-method "ssh")
